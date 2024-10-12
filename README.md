@@ -1,9 +1,31 @@
 # Wordle Game in Java
 
-This project is a fully functional Wordle game implemented in Java. The game challenges players to guess a five-letter word within a limited number of attempts. It includes the following key features:
+## Overview
+The **Wordle Game in Java** is a console-based word-guessing game where players attempt to guess a hidden five-letter word within a set number of tries. This project uses multiple classes to handle game logic, color codes for feedback, and external files to load the word pool.
 
-- **Color Codes**: Visual feedback is provided through color codes to indicate whether a guessed letter is correct and in the correct position, correct but in the wrong position, or incorrect entirely.
-- **Multiple Classes**: The game is structured using multiple classes to separate concerns such as game logic, word handling, and user interaction.
-- **File Reading**: The game reads word lists from external files, allowing for easy updates or customization of the word pool without modifying the source code.
+## Features
+- **Guess Feedback**: Provides real-time feedback on guessed words using color codes:
+  - Green for correct letters in the right position.
+  - Yellow for correct letters in the wrong position.
+  - Gray for incorrect letters.
+- **File Handling**: Reads word lists from external files (`answers.txt` and `dictionary.txt`) for game customization.
+- **Multiple Classes**: Game logic is split into separate classes for better organization and code maintainability.
+  
+## Files
+- **`Main.java`**: The entry point for the application, handles the overall game flow.
+- **`WordleGame.java`**: Contains the core logic of the game, including word checking and feedback generation.
+- **`WordBank.java`**: Manages word lists and reads from external files (`answers.txt` and `dictionary.txt`).
+- **`WordleLetter.java`**: Represents individual letters in the game, tracking their status (correct, incorrect, or misplaced).
+- **`answers.txt`**: Contains the list of possible answers for the game.
+- **`dictionary.txt`**: Contains a broader list of valid words players can guess.
 
-The game runs in the console and provides an engaging Wordle experience with dynamic feedback and clean code organization.
+## How to Run
+1. Clone the repository and navigate to the project directory.
+2. Ensure `answers.txt` and `dictionary.txt` are in the same directory as the `.java` files.
+3. Compile and run the Java program:
+    ```bash
+    javac Main.java WordleGame.java WordBank.java WordleLetter.java
+    java Main
+    ```
+4. Play the game by guessing five-letter words through the console.
+
