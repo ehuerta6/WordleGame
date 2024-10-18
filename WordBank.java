@@ -10,53 +10,45 @@
 
  import java.io.File;
  import java.io.FileNotFoundException;
+ import java.util.HashSet;
  import java.util.Scanner;
- 
+ import java.util.Set;
+
  public class WordBank {
- 
-     /*
-      * This method retrieves the answer for a specific puzzle number from the answers.txt file.
-      * It takes an integer puzzleNumber as input and returns the corresponding answer.
-      * Throws FileNotFoundException if the file is not found or if the specified puzzle number exceeds the available puzzles.
-      */
-     public static String getAnswerForPuzzleNumber(int puzzleNumber) throws FileNotFoundException {
-         File file = new File("answers.txt"); // Create a File object for the answers.txt file
-         Scanner scanner = new Scanner(file); // Create a Scanner object to read from the file
- 
-         for (int i = 0; i < puzzleNumber; i++) {
-             if (!scanner.hasNext()) {
-                 scanner.close();
-                 throw new FileNotFoundException("File not found: answers.txt"); // Throw exception if file not found or if puzzle number exceeds available puzzles
-             }
-             scanner.next();
-         }
- 
-         if (!scanner.hasNext()) {
-             scanner.close();
-             throw new FileNotFoundException("File not found: answers.txt"); // Throw exception if file not found or if puzzle number exceeds available puzzles
-         }
-         String answer = scanner.next(); // Retrieve the answer for the specified puzzle number
-         scanner.close(); // Close the scanner
-         return answer; // Return the answer
+     private static final String WORD_FILE = "dictionary.txt";
+     private Set<String> validWords;
+
+     public WordBank() throws FileNotFoundException {
+         validWords = new HashSet<>();
+         loadWords();
      }
- 
-     /*
-      * This method checks if the proposed word exists in the dictionary.
-      * It takes a String proposed as input and returns true if the word exists in the dictionary, false otherwise.
-      */
-     public static boolean checkInDictionary(String proposed) {
-         File dictionaryFile = new File("dictionary.txt"); // Create a File object for the dictionary.txt file
-         try (Scanner scanner = new Scanner(dictionaryFile)) { // Use try-with-resources to automatically close the scanner
-             while (scanner.hasNextLine()) { // Iterate through each line in the dictionary
-                 String word = scanner.nextLine().trim(); // Get the word from the current line and trim any leading or trailing whitespace
-                 if (word.equalsIgnoreCase(proposed)) { // Check if the proposed word matches the current word in the dictionary (case-insensitive)
-                     return true; // Return true if the word is found in the dictionary
-                 }
+
+     private void loadWords() throws FileNotFoundException {
+         File file = new File(WORD_FILE);
+         Scanner scanner = new Scanner(file);
+         while (scanner.hasNextLine()) {
+             String word = scanner.nextLine().trim().toLowerCase();
+             if (word.length() == 5) {
+                 validWords.add(word);
              }
-         } catch (FileNotFoundException e) { // Catch FileNotFoundException if the dictionary file is not found
-             System.err.println("File not found: dictionary.txt"); // Print error message
          }
-         return false; // Return false if the word is not found in the dictionary
+         scanner.close();
+     }
+
+     public boolean isValidWord(String word) {
+         return validWords.contains(word.toLowerCase());
+     }
+
+     public static String getAnswerForPuzzleNumber(int puzzleNumber) throws FileNotFoundException {
+         File file = new File(WORD_FILE);
+         Scanner scanner = new Scanner(file);
+         String answer = "";
+         int currentLine = 0;
+         while (scanner.hasNextLine() && currentLine <= puzzleNumber) {
+             answer = scanner.nextLine().trim().toLowerCase();
+             currentLine++;
+         }
+         scanner.close();
+         return answer;
      }
  }
- 

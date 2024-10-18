@@ -12,6 +12,11 @@
     private char letter; // The letter stored by the WordleLetter object
     private String color; // The color assigned to the letter
 
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+
     /*
      * Constructor to initialize a WordleLetter object with a specified letter.
      */
@@ -202,4 +207,61 @@
         System.out.println("You solved the puzzle using " + blueCode + "1" + resetCode + " attempt.");
         System.out.println(blueCode + "End of Gameplay Example" + resetCode);
     }    
+
+    public static String getGameRulesText() {
+        return "<html><body style='width: 300px; font-family: Arial, sans-serif;'>" +
+               "<h1 style='color: #538d4e;'>How to Play Wordle</h1>" +
+               "<p>Guess the word in 5 tries:</p>" +
+               "<ul>" +
+               "<li>Each guess must be a valid 5-letter word.</li>" +
+               "<li>The color of the tiles will change to show how close your guess was.</li>" +
+               "</ul>" +
+               "<h2 style='color: #538d4e;'>Color Meanings:</h2>" +
+               "<p><span style='background-color: #538d4e; color: white; padding: 2px 5px;'>Green</span> - Correct letter in the correct spot.</p>" +
+               "<p><span style='background-color: #b59f3b; color: white; padding: 2px 5px;'>Yellow</span> - Correct letter in the wrong spot.</p>" +
+               "<p><span style='background-color: #dc3545; color: white; padding: 2px 5px;'>Red</span> - Letter is not in the word.</p>" +
+               "</body></html>";
+    }
+
+    public static String getExampleText() {
+        return "<html><body style='width: 300px; font-family: Arial, sans-serif;'>" +
+               "<h1 style='color: #538d4e;'>Gameplay Example</h1>" +
+               "<p>Let's say the word is 'SMART':</p>" +
+               "<p>1. You guess 'CRANE':</p>" +
+               createColoredWord("CRANE", "YRRRR") +
+               "<p>2. You guess 'STARE':</p>" +
+               createColoredWord("STARE", "GYRYY") +
+               "<p>3. You guess 'SHARD':</p>" +
+               createColoredWord("SHARD", "GGRRY") +
+               "<p>4. You guess 'SMIRK':</p>" +
+               createColoredWord("SMIRK", "GGRRY") +
+               "<p>5. Finally, you guess 'SMART' and win!</p>" +
+               createColoredWord("SMART", "GGGGG") +
+               "</body></html>";
+    }
+
+    private static String createColoredWord(String word, String colors) {
+        StringBuilder result = new StringBuilder("<div style='display: inline-block; margin-bottom: 10px;'>");
+        for (int i = 0; i < word.length(); i++) {
+            String backgroundColor = getColorCode(colors.charAt(i));
+            result.append(String.format("<span style='background-color: %s; color: white; padding: 2px 5px; margin-right: 2px;'>%s</span>", 
+                          backgroundColor, word.charAt(i)));
+        }
+        result.append("</div>");
+        return result.toString();
+    }
+
+    private static String getColorCode(char color) {
+        switch (color) {
+            case 'G': return "#538d4e"; // Green
+            case 'Y': return "#b59f3b"; // Yellow
+            case 'R': return "#dc3545"; // Red
+            default: return "#dc3545"; // Default to red for any unexpected input
+        }
+    }
+
+    // Add this new method
+    public String getColor() {
+        return this.color;
+    }
 }
